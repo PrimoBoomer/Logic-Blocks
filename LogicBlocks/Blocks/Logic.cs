@@ -154,16 +154,15 @@ namespace LogicBlocks.Blocks
                             gate_block.server.parent_blocks.Remove(this);
                             this.server.connected_blocks.Remove(gate_block);
                             this.connected_coords.Remove(gate_block.Pos);
-                            gate_block.server.parent_blocks.Remove(this);
                         }
                         else
                         {
                             this.server.connected_blocks.Add(gate_block);
                             this.connected_coords.Add(gate_block.Pos);
                             gate_block.server.parent_blocks.Add(this);
-                            gate_block.Refresh();
                         }
                         gate_block.Refresh();
+                        this.MarkDirty(true);
                         this.Sync();
                     }
                 }
@@ -226,7 +225,7 @@ namespace LogicBlocks.Blocks
                         this.server.api.Event.EnqueueMainThreadTask(() =>
                         {
                             this.placed = false;
-                        }, $"resetplaced:${this.Pos}");
+                        }, $"resetplaced:{this.Pos}");
                     }
 
                     foreach (var coords in this.connected_coords)
@@ -366,6 +365,7 @@ namespace LogicBlocks.Blocks
 
         public override void OnBlockRemoved()
         {
+            base.OnBlockRemoved();
             if (this.client != null)
                 this.client.api.Event.UnregisterRenderer(this, EnumRenderStage.Opaque);
             else if (this.server != null)
@@ -378,6 +378,13 @@ namespace LogicBlocks.Blocks
                     parent_block.Sync();
                 }
             }
+        }
+
+        public override void OnBlockUnloaded()
+        {
+            base.OnBlockUnloaded();
+            if (this.client != null)
+                this.client.api.Event.UnregisterRenderer(this, EnumRenderStage.Opaque);
         }
 
         public void Dispose()

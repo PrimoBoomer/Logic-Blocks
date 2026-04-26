@@ -37,15 +37,16 @@ namespace LogicBlocks.Blocks
             if (packetid == (int)ClientAction.Trigger)
             {
                 this.state = true;
+                this.MarkDirty(true);
                 foreach (IServerPlayer player in this.server.api.Server.Players)
-                    this.server.api.Network.SendBlockEntityPacket(player as IServerPlayer, Pos, (int)ServerState.ChangeState, SerializerUtil.Serialize(this.state));
+                    this.server.api.Network.SendBlockEntityPacket(player, Pos, (int)ServerState.ChangeState, SerializerUtil.Serialize(this.state));
                 for (int i = 0; i < base.server.connected_blocks.Count; i++)
                 {
                     base.server.connected_blocks[i].Refresh();
                 }
             }
         }
-       
+
         protected void Tick(float delta)
         {
             if (this.server == null)
@@ -58,8 +59,9 @@ namespace LogicBlocks.Blocks
                 {
                     timer = 0;
                     this.state = false;
+                    this.MarkDirty(true);
                     foreach (IServerPlayer player in this.server.api.Server.Players)
-                        this.server.api.Network.SendBlockEntityPacket(player as IServerPlayer, Pos, (int)ServerState.ChangeState, SerializerUtil.Serialize(this.state));
+                        this.server.api.Network.SendBlockEntityPacket(player, Pos, (int)ServerState.ChangeState, SerializerUtil.Serialize(this.state));
                     for (int i = 0; i < base.server.connected_blocks.Count; i++)
                     {
                         base.server.connected_blocks[i].Refresh();
@@ -68,9 +70,16 @@ namespace LogicBlocks.Blocks
             }
         }
 
-        public new void Dispose()
+        public override void OnBlockRemoved()
         {
             this.UnregisterGameTickListener(this.listener_id);
+            base.OnBlockRemoved();
+        }
+
+        public override void OnBlockUnloaded()
+        {
+            this.UnregisterGameTickListener(this.listener_id);
+            base.OnBlockUnloaded();
         }
     }
 }

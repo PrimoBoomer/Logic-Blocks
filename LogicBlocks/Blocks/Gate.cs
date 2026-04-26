@@ -25,10 +25,11 @@ namespace LogicBlocks.Blocks
                 this.state = false;
             if (prev_state != this.state)
             {
+                this.MarkDirty(true);
                 for (int i = 0; i < base.server.connected_blocks.Count; i++)
                     base.server.connected_blocks[i].Refresh();
                 foreach (IServerPlayer player in this.server.api.Server.Players)
-                    this.server.api.Network.SendBlockEntityPacket(player as IServerPlayer, Pos, (int)ServerState.ChangeState, SerializerUtil.Serialize(this.state));
+                    this.server.api.Network.SendBlockEntityPacket(player, Pos, (int)ServerState.ChangeState, SerializerUtil.Serialize(this.state));
             }
             this.called = false;
         }

@@ -29,8 +29,9 @@ namespace LogicBlocks.Blocks
             if (packetid == (int)ClientAction.Trigger)
             {
                 this.state = !this.state;
+                this.MarkDirty(true);
                 foreach (IServerPlayer player in this.server.api.Server.Players)
-                    this.server.api.Network.SendBlockEntityPacket(player as IServerPlayer, Pos, (int)ServerState.ChangeState, SerializerUtil.Serialize(this.state));
+                    this.server.api.Network.SendBlockEntityPacket(player, Pos, (int)ServerState.ChangeState, SerializerUtil.Serialize(this.state));
                 for (int i = 0; i < base.server.connected_blocks.Count; i++)
                 {
                     base.server.connected_blocks[i].Refresh();
