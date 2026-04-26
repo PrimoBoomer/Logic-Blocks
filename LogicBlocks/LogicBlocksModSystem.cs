@@ -32,7 +32,9 @@ namespace LogicBlocks
 
             if (!this.meshes.TryGetValue(key, out MeshRef? value))
             {
-                Block block = capi.World.GetBlock(new AssetLocation(key));
+                Block? block = capi.World.GetBlock(new AssetLocation(key));
+                if (block is null)
+                    throw new InvalidOperationException($"Block not found: {key}");
                 capi.Tesselator.TesselateBlock(block, out MeshData mesh);
                 value = capi.Render.UploadMesh(mesh);
                 this.meshes[key] = value;

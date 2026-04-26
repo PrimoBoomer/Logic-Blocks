@@ -1,14 +1,13 @@
 {
-  "$schema": "https://moddbcdn.vintagestory.at/schema/modinfo.latest.json",
   "type": "Code",
   "modid": "logicblocks",
   "name": "Logic Blocks",
   "authors": [
-    "Zolstoy"
+    "Primo Boomer"
   ],
-  "description": "(beta) This mod provides blocks for logic and interactions with gates.",
-  "version": "0.5.0",
+  "description": "This mod provides blocks for logic and interactions with gates.",
+  "version": "1.0.0",
   "dependencies": {
-    "game": "1.21.6"
+    "game": "1.22.2"
   }
 }

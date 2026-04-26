@@ -1,4 +1,4 @@
-.vscode/
+.claude/
 
 # Created by https://www.toptal.com/developers/gitignore/api/csharp,visualstudio,visualstudiocode,rider
 # Edit at https://www.toptal.com/developers/gitignore?templates=csharp,visualstudio,visualstudiocode,rider
@@ -386,6 +386,7 @@ FodyWeavers.xsd
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/*.ps1
 *.code-workspace
 
 # Local History for Visual Studio Code
